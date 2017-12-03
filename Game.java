@@ -21,8 +21,8 @@ public class Game {
 		String filename = args[0];
 		read_file(filename);
 
-		for (int i = 0; i < roomList.size(); i++)
-			roomList.get(i).print();
+		for (int i = 0; i < treasureList.size(); i++)
+			treasureList.get(i).print();
 
 
 	}
