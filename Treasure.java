@@ -34,4 +34,10 @@ public class Treasure {
 		return value;
 	}
 
+	public void print()
+	{
+		System.out.format("Name: %s \n", name);
+		System.out.format("Weight: %f \n", weight);
+		System.out.format("Value: %d \n", value);
+	}
 }

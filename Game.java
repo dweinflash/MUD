@@ -69,6 +69,9 @@ public class Game {
 					if (type.equals("ROOM"))
 						defineRoom(reader);		
 				}
+				// connection
+				else if (cmd.length() > 0)
+					defineConnection(line);
 	
 			}
 	
@@ -80,6 +83,45 @@ public class Game {
 		}
 		
 
+	}
+
+	public static void defineConnection(String line)
+	{
+		String[] dirs = {"NORTH", "SOUTH", "EAST", "WEST"};
+		String [] words = line.split(" ");
+		String direction = "";
+		String room1;
+		String room2;
+		Room room2_obj = null;
+
+		// find direction
+		for (int i = 0; i < words.length; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				if (dirs[j].equals(words[i].toUpperCase()))
+					direction = dirs[j];
+			}
+		}
+	
+		// find rooms	
+		room1 = line.substring(0,line.indexOf(direction)-1);
+		room2 = line.substring(line.indexOf(direction) + direction.length() + 1);
+
+		// find room2 obj
+		for (int i = 0; i < roomList.size(); i++)
+		{
+			if (room2.equals(roomList.get(i).get_name()))
+				room2_obj = roomList.get(i);
+		}
+
+		// make connection
+		for (int i = 0; i < roomList.size(); i++)
+		{
+			if (room1.equals(roomList.get(i).get_name()))
+				roomList.get(i).set_connection(direction, room2_obj); 
+		}	
+			
 	}
 
 	public static void defineMob(BufferedReader reader)

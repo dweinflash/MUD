@@ -34,4 +34,10 @@ public class Weapon {
 		return damage;
 	}
 
+	public void print()
+	{
+		System.out.format("Name: %s \n", name);
+		System.out.format("Weight: %f \n", weight);
+		System.out.format("Power: %d \n", damage);
+	}
 }

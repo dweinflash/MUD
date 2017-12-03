@@ -34,4 +34,10 @@ public class Mob {
 		return power;
 	}
 
+	public void print()
+	{
+		System.out.format("Name: %s \n", name);
+		System.out.format("Description: %s \n", description);
+	}
+
 }
