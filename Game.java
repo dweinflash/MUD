@@ -7,23 +7,165 @@ public class Game {
 	private static ArrayList<Treasure> treasureList = new ArrayList<Treasure>();	
 	private static ArrayList<Weapon> weaponList = new ArrayList<Weapon>();
 	private static ArrayList<Room> roomList = new ArrayList<Room>();
+	private static Room stashRoom;
+	private static Room curRoom;
 
 	public static void main(String[] args)
 	{
-		// Exit if no filename in cmd line.
+		// exit if no filename in cmd line
 		if (args.length < 1)
 		{
 			System.err.println("Invalid game file. Exiting.");
 			System.exit(1);
 		}
 	
-		// Define the dungeon with game file	
+		// define the dungeon with game file	
 		String filename = args[0];
 		read_file(filename);
+		stashRoom = roomList.get(0);
+		curRoom = roomList.get(0);
 
-		for (int i = 0; i < treasureList.size(); i++)
-			treasureList.get(i).print();
+		// introduction - choose player
+		System.out.println("Welcome to the adventure!");
+		System.out.println("What class would you like to play as (Warrior, Dwarf, or Ranger)?");
 
+		Scanner sc = new Scanner(System.in);
+		String line = sc.nextLine().toUpperCase();
+
+		while (!(line.equals("WARRIOR") || line.equals("DWARF") || line.equals("RANGER")))
+		{
+			System.out.println("Invalid choice.");
+			line = sc.nextLine().toUpperCase();
+		}
+
+		// create player
+		Player player;
+		if (line.equals("WARRIOR"))
+			player = new Warrior();
+		else if (line.equals("DWARF"))
+			player = new Dwarf();
+		else if (line.equals("RANGER"))
+			player = new Ranger();
+
+		// begin REPL
+		System.out.println("Starting the adventure...");		
+
+		String cmd;
+		String[] words;
+		String detail = "";
+		// detail is the string after the cmd
+
+		while (sc.hasNextLine())
+		{
+			line = sc.nextLine().toUpperCase();
+			words = line.split(" ");
+			cmd = words[0];
+
+			if (words.length > 1)
+				detail = line.substring(cmd.length()+1);
+			else
+				detail = "";
+			
+			// >
+			System.out.print("> ");
+			
+			if (cmd.equals("LOOK"))
+				curRoom.print();
+			else if (cmd.equals("EXAMINE"))
+				examine(detail);	
+		}	
+		
+
+	}
+
+	public static void examine(String detail)
+	{
+		// no TYPE or NAME provided
+		if (detail.equals(""))
+		{
+			System.out.println("Invalid command.");
+			return;
+		}
+
+		String[] words = detail.split(" ");
+
+		// not enough arguments in command
+		if (words.length < 2)
+		{
+			System.out.println("Invalid command.");
+			return;
+		}
+
+		String type = words[0];
+		String name = words[1];
+	
+		// incorrect type
+		if (!(type.equals("MOB") || type.equals("ITEM")))
+		{
+			System.out.println("Invalid command.");
+			return;
+		}
+
+		// examine MOB
+		int found = 0;
+		if (type.equals("MOB"))
+		{
+			if (curRoom.get_mob().toUpperCase().equals(name))
+			{
+				for (int i = 0; i < mobList.size(); i++)
+				{
+					if (mobList.get(i).get_name().toUpperCase().equals(name))
+					{
+						mobList.get(i).print();
+						found++;
+					}
+				}
+			}
+		}
+
+		// check if item in room
+		String [] cur_items = curRoom.get_items();
+
+		int item_in_room = 0;
+		for (int i = 0; i < cur_items.length; i++)
+		{
+			if (cur_items[i].toUpperCase().equals(name))
+				item_in_room++;
+		}
+		
+		if (item_in_room == 0)
+		{
+			System.out.println("Invalid command.");
+			return;
+		}
+
+		// examine ITEM
+		if (type.equals("ITEM"))
+		{
+			// search Treasure
+			for (int i = 0; i < treasureList.size(); i++)
+			{
+				if (treasureList.get(i).get_name().toUpperCase().equals(name))
+				{
+					treasureList.get(i).print();
+					found++;
+				}
+			}
+
+			// search Weapon
+			for (int i = 0; i < weaponList.size(); i++)
+			{
+				if (weaponList.get(i).get_name().toUpperCase().equals(name))
+				{
+					weaponList.get(i).print();
+					found++;
+				}
+			}
+		}
+
+		// NAME not found
+		if (found == 0)
+			System.out.println("Invalid command.");
 
 	}
 
