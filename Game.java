@@ -499,7 +499,7 @@ public class Game {
 				else if (category.equals("ITEMS:"))
 				{	
 					items = line.substring(category.length()+1).split(",");
-					room.set_items(items);
+					room.set_items(items, treasureList, weaponList);
 				}
 				else if (category.equals("MOB:"))
 				{

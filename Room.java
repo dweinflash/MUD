@@ -1,10 +1,11 @@
 import java.util.Arrays;
+import java.util.*;
 
 public class Room {
 
 	private String name;
 	private String description;
-	private String[] items;
+	private ArrayList<Item> itemList;
 	private String mob;
 
 	private Room[] connections = new Room[4];
@@ -20,8 +21,11 @@ public class Room {
 		description = d;
 	}
 
-	public void set_items(String[] i)
+	public void set_items(String[] i, ArrayList<Treasure> t, ArrayList<Weapon> w)
 	{
+		itemList = new ArrayList<Item>();		
+
+		// clean item names
 		int n = 0;
 		for (String item : i)
 		{
@@ -30,7 +34,29 @@ public class Room {
 			n++;
 		}
 
-		items = i;
+		// items array list
+		String item_name;
+		Item obj;
+		for (int k = 0; k < i.length; k++)
+		{
+			item_name = i[k];
+			
+			// search treasure list
+			for (int j = 0; j < t.size(); j++)
+			{
+				obj = t.get(j);
+				if (obj.get_name().equals(item_name))
+					itemList.add(obj);	
+			}
+			
+			// search weapon list
+			for (int j = 0; j < w.size(); j++)
+			{
+				obj = w.get(j);
+				if (obj.get_name().equals(item_name))
+					itemList.add(obj);
+			}
+		}
 	}
 
 	public void set_mob(String m)
@@ -101,6 +127,11 @@ public class Room {
 
 	public String[] get_items()
 	{
+		String[] items = new String[itemList.size()];
+
+		for (int i = 0; i < itemList.size(); i++)
+			items[i] = itemList.get(i).get_name();
+
 		return items;
 	}
 
@@ -132,9 +163,13 @@ public class Room {
 		System.out.println("");
 
 		// Print sorted item list
+		String[] items = new String[itemList.size()];
+		for (int i = 0; i < itemList.size(); i++)
+			items[i] = itemList.get(i).get_name();
 		Arrays.sort(items);
-		System.out.print("Items: ");
 
+
+		System.out.print("Items: ");
 		comma = 0;
 		for (String i : items)
 		{
