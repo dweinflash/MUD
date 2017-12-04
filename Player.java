@@ -46,7 +46,7 @@ public class Player {
 		for (int i = 0; i < inventory.size(); i++)
 		{
 			obj = inventory.get(i);			
-			if (obj.get_name().equals(item_name))
+			if (obj.get_name().toUpperCase().equals(item_name))
 			{
 				inventory.remove(i);
 				carry_amount -= obj.get_weight();
