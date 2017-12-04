@@ -72,10 +72,29 @@ public class Game {
 			if (cmd.equals("LOOK"))
 				curRoom.print();
 			else if (cmd.equals("EXAMINE"))
-				examine(detail);	
+				examine(detail);
+			else if (cmd.equals("MOVE"))
+				move(detail);	
 		}	
 		
 
+	}
+
+	public static void move(String detail)
+	{
+		// invalid direction
+		if (!(detail.equals("NORTH") || detail.equals("SOUTH") || 
+			detail.equals("EAST") || detail.equals("WEST")))
+		{
+			System.out.println("Invalid command.");
+			return;
+		}
+
+		if (curRoom.valid_connect(detail))
+			curRoom = curRoom.get_connection(detail);	
+		else
+			System.out.println("Invalid command.");	
+	
 	}
 
 	public static void examine(String detail)
@@ -97,7 +116,7 @@ public class Game {
 		}
 
 		String type = words[0];
-		String name = words[1];
+		String name = detail.substring(type.length()+1);
 	
 		// incorrect type
 		if (!(type.equals("MOB") || type.equals("ITEM")))
