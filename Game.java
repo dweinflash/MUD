@@ -75,10 +75,80 @@ public class Game {
 			else if (cmd.equals("MOVE"))
 				move(detail);
 			else if (cmd.equals("PICKUP"))
-				pickup(detail);	
+				pickup(detail);
+			else if (cmd.equals("DROP"))
+				drop(detail);
+			else if (cmd.equals("STASH"))
+				stash(detail);
+			else if (cmd.equals("FIGHT"))
+				fight(detail);
+			else if (cmd.equals("INVENTORY"))
+				player.get_inventory();	
 		}	
 		
 
+	}
+
+	public static void fight(String detail)
+	{
+		Weapon weapon;
+		
+		// check if mob in room
+		if (curRoom.get_mob().equals("none"))
+		{
+			System.out.println("No mob found.");
+			return;
+		}
+
+		weapon = player.get_weapon(detail);
+
+		// check if invalid weapon
+		if (weapon == null)
+			return;
+		
+		int weapon_damage = weapon.get_damage();
+		int mob_power = curRoom.get_mob_obj().get_power();
+		String mob_name = curRoom.get_mob_obj().get_name();
+
+		if (weapon_damage > mob_power)
+		{
+			System.out.println("You destroyed " + mob_name + " with power level " 
+						+ String.valueOf(mob_power) + "!");
+			curRoom.set_mob(null);
+			curRoom.set_mob_obj(null);
+		}
+		else
+		{
+			System.out.println(mob_name + " defeated you! Try a different weapon.");
+		}	
+
+	}
+
+	public static void stash(String detail)
+	{
+		String stashRoom_name = stashRoom.get_name();
+		String curRoom_name = curRoom.get_name();
+
+		// check if in stash room
+		if (!(stashRoom_name.equals(curRoom_name)))
+		{
+			System.out.println("Invalid command.");
+			return;
+		}
+		else
+		{
+			drop(detail);
+		}
+		
+	}
+
+	public static void drop(String detail)
+	{
+		Item drop_item;
+		drop_item = player.drop(detail);
+
+		if (drop_item != null)
+			curRoom.add(drop_item);
 	}
 
 	public static void pickup(String detail)
@@ -125,7 +195,10 @@ public class Game {
 		}
 
 		if (curRoom.valid_connect(detail))
-			curRoom = curRoom.get_connection(detail);	
+		{
+			curRoom = curRoom.get_connection(detail);
+			player.move();
+		}	
 		else
 			System.out.println("Invalid command.");	
 	
@@ -171,6 +244,7 @@ public class Game {
 					{
 						mobList.get(i).print();
 						found++;
+						return;
 					}
 				}
 			}
@@ -507,6 +581,7 @@ public class Game {
 		String description;
 		String[] items;
 		String mob;
+		Mob mob_obj = null;
 
 		Room room = new Room();
 
@@ -538,7 +613,15 @@ public class Game {
 				else if (category.equals("MOB:"))
 				{
 					mob = words[1];
+			
+					for (int i = 0; i < mobList.size(); i++)
+					{
+						if (mobList.get(i).get_name().equals(mob))
+							mob_obj = mobList.get(i);
+					}							
+
 					room.set_mob(mob);
+					room.set_mob_obj(mob_obj);
 				}
 			}
 

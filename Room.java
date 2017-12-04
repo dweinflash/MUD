@@ -7,6 +7,7 @@ public class Room {
 	private String description;
 	private ArrayList<Item> itemList;
 	private String mob;
+	private Mob mob_obj;
 
 	private Room[] connections = new Room[4];
 	String[] dirs = {"EAST", "NORTH", "SOUTH", "WEST"};
@@ -62,6 +63,11 @@ public class Room {
 	public void set_mob(String m)
 	{
 		mob = m;
+	}
+
+	public void set_mob_obj(Mob m)
+	{
+		mob_obj = m;
 	}
 
 	public void set_connection(String direction, Room connect)
@@ -158,9 +164,19 @@ public class Room {
 		}
 	}
 
+	public void add(Item obj)
+	{
+		itemList.add(obj);
+	}
+
 	public String get_mob()
 	{
 		return mob;
+	}
+
+	public Mob get_mob_obj()
+	{
+		return mob_obj;
 	}
 
 	public void print()

@@ -87,6 +87,30 @@ public class Player {
 
 	}
 
+	public Weapon get_weapon(String item_name)
+	{
+		Item obj = null;
+
+		// find weapon in inventory
+		for (int i = 0; i < inventory.size(); i++)
+		{
+			if (inventory.get(i).get_name().toUpperCase().equals(item_name))
+				obj = inventory.get(i);
+		}
+		
+		if ((obj == null) || !(obj instanceof Weapon))
+		{
+			System.out.println("Invalid weapon.");
+			return null;
+		}
+		else
+		{
+			Weapon weapon = (Weapon) obj;
+			return weapon;	
+		}
+
+	}
+
 	public void set_carry_limit(int carry)
 	{
 		carry_limit += carry;
@@ -132,16 +156,19 @@ public class Player {
 		return carry_amount;
 	}
 
-	public int get_score()
+	public int get_score(Room stashRoom)
 	{
 		int total_moves = (int) Math.floor(moves / score_denom);
 		int total_values = 0;
-
+		String[] stash = stashRoom.get_items();
+		String stash_item;
+		
 		Item obj;
 		// total treasure value
-		for (int i = 0; i < inventory.size(); i++)
+		for (int i = 0; i < stash.length; i++)
 		{
-			obj = inventory.get(i);
+			stash_item = stash[i];
+			obj = stashRoom.get_item(stash_item);
 			if (obj instanceof Treasure)
 			{
 				Treasure t = (Treasure) obj;
