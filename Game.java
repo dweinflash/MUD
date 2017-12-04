@@ -9,6 +9,7 @@ public class Game {
 	private static ArrayList<Room> roomList = new ArrayList<Room>();
 	private static Room stashRoom;
 	private static Room curRoom;
+	private static Player player;
 
 	public static void main(String[] args)
 	{
@@ -39,7 +40,6 @@ public class Game {
 		}
 
 		// create player
-		Player player;
 		if (line.equals("WARRIOR"))
 			player = new Warrior();
 		else if (line.equals("DWARF"))
@@ -66,7 +66,6 @@ public class Game {
 			else
 				detail = "";
 			
-			// >
 			System.out.print("> ");
 			
 			if (cmd.equals("LOOK"))
@@ -74,10 +73,45 @@ public class Game {
 			else if (cmd.equals("EXAMINE"))
 				examine(detail);
 			else if (cmd.equals("MOVE"))
-				move(detail);	
+				move(detail);
+			else if (cmd.equals("PICKUP"))
+				pickup(detail);	
 		}	
 		
 
+	}
+
+	public static void pickup(String detail)
+	{
+		String [] cur_items = curRoom.get_items();
+		Item item_pickup;
+
+		// check if item in room
+		int found = 0;
+		for (int i = 0; i < cur_items.length; i++)
+		{
+			if (cur_items[i].toUpperCase().equals(detail))
+				found++;
+		}
+
+		if (found == 0)
+		{
+			System.out.println("Invalid item.");
+			return;
+		}
+
+		// check if mob in room
+		if (!(curRoom.get_mob().equals("none")))
+		{
+			System.out.println("You must destroy the mob first.");
+			return;
+		}
+
+		// get item
+		item_pickup = curRoom.get_item(detail);
+
+		if (player.pickup(item_pickup))
+			curRoom.remove(item_pickup);
 	}
 
 	public static void move(String detail)

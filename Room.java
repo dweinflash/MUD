@@ -135,6 +135,29 @@ public class Room {
 		return items;
 	}
 
+	public Item get_item(String item_name)
+	{
+		item_name = item_name.toUpperCase();
+
+		int j = 0;
+		for (int i = 0; i < itemList.size(); i++)
+		{
+			if (itemList.get(i).get_name().toUpperCase().equals(item_name))
+				j = i;
+		}
+
+		return itemList.get(j);
+	}
+
+	public void remove(Item obj)
+	{
+		for (int i = 0; i < itemList.size(); i++)
+		{
+			if (itemList.get(i).get_name().equals(obj.get_name()))
+				itemList.remove(i);
+		}
+	}
+
 	public String get_mob()
 	{
 		return mob;
