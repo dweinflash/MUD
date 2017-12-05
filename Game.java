@@ -137,6 +137,7 @@ public class Game {
 		}
 		else
 		{
+			player.move();
 			System.out.println(mob_name + " defeated you! Try a different weapon.");
 		}	
 
