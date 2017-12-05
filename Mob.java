@@ -36,8 +36,8 @@ public class Mob {
 
 	public void print()
 	{
-		System.out.format("Name: %s \n", name);
-		System.out.format("Description: %s \n", description);
+		System.out.format("Name: %s\n", name);
+		System.out.format("Description: %s\n", description);
 	}
 
 }

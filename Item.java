@@ -25,7 +25,7 @@ public class Item {
 
 	public void print()
 	{
-		System.out.format("Name: %s \n", name);
-		System.out.format("Weight: %f \n", weight);
+		System.out.format("Name: %s\n", name);
+		System.out.format("Weight: %f\n", weight);
 	}
 }

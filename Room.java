@@ -181,8 +181,8 @@ public class Room {
 
 	public void print()
 	{
-		System.out.format("Name: %s \n", name);
-		System.out.format("Description: %s \n", description);
+		System.out.format("Name: %s\n", name);
+		System.out.format("Description: %s\n", description);
 		System.out.print("There are connections in the following directions: ");
 
 		// Print sorted connection directions
@@ -225,6 +225,6 @@ public class Room {
 		//Print mob
 		if (mob == null)
 			mob = "none";
-		System.out.format("Mob: %s \n", mob);
+		System.out.format("Mob: %s\n", mob);
 	}
 }

@@ -17,8 +17,8 @@ public class Treasure extends Item {
 		String name = super.get_name();
 		float weight = super.get_weight();
 
-		System.out.format("Name: %s \n", name);
-		System.out.format("Weight: %f \n", weight);
-		System.out.format("Value: %d \n", value);
+		System.out.format("Name: %s\n", name);
+		System.out.format("Weight: %.1f\n", weight);
+		System.out.format("Value: %d\n", value);
 	}
 }

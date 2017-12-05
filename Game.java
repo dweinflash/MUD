@@ -83,10 +83,27 @@ public class Game {
 			else if (cmd.equals("FIGHT"))
 				fight(detail);
 			else if (cmd.equals("INVENTORY"))
-				player.get_inventory();	
+				player.get_inventory();
+			else if (cmd.equals("QUIT"))
+			{
+				quit();
+				break;
+			}
+			else
+				System.out.println("Invalid command.");	
 		}	
 		
 
+	}
+	
+	public static void quit()
+	{
+		int score;
+		
+		score = player.get_score(stashRoom);
+
+		System.out.println("Finishing game...");
+		System.out.println("Final score: " + String.valueOf(score));
 	}
 
 	public static void fight(String detail)
@@ -114,8 +131,9 @@ public class Game {
 		{
 			System.out.println("You destroyed " + mob_name + " with power level " 
 						+ String.valueOf(mob_power) + "!");
-			curRoom.set_mob(null);
+			curRoom.set_mob("none");
 			curRoom.set_mob_obj(null);
+			player.move();
 		}
 		else
 		{
