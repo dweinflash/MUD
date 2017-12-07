@@ -1,3 +1,12 @@
+/*
+* David Weinflash
+* Tim Root
+* Section 001B
+*
+* Assignment #12 - The Adventure, CSc 210, Fall 2017
+* This class acts as a base class for treasure and weapons.
+*/
+
 public class Item {
 
 	private String name;

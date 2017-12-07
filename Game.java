@@ -1,3 +1,13 @@
+/*
+* David Weinflash
+* Tim Root
+* Section 001B
+*
+* Assignment #12 - The Adventure, CSc 210, Fall 2017
+* This class will parse the game file and act as the REPL
+* for the Adventure game.
+*/
+
 import java.io.*;
 import java.util.*;
 
@@ -13,6 +23,16 @@ public class Game {
 
 	public static void main(String[] args)
 	{
+		/*
+		* main
+		* Parse the game file to define the dungeon. Ask the player to 
+		* pick a character and begin the REPL. 
+		*
+		* Arguments: String[] args - command line arguments
+		*
+		* Return value - None.
+		*/
+
 		// exit if no filename in cmd line
 		if (args.length < 1)
 		{
@@ -98,6 +118,16 @@ public class Game {
 	
 	public static void quit()
 	{
+		/*
+		* quit
+		* Determine final score based on character and treasure
+		* in stash room. 
+		*
+		* Arguments: None.
+		*
+		* Return value - None. Prints to stdout.
+		*/
+
 		int score;
 		
 		score = player.get_score(stashRoom);
@@ -108,6 +138,18 @@ public class Game {
 
 	public static void fight(String detail)
 	{
+		/*
+		* fight
+		* Fight the mob in the current room with the weapon name
+		* specified in argument. Print error and return if no mob 
+		* found or weapon invalid. 
+		*
+		* Arguments: String detail - weapon name
+		*
+		* Return value - None. Prints to stdout the result of the fight
+		* or any errors.
+		*/
+
 		Weapon weapon;
 		
 		// check if mob in room
@@ -124,6 +166,8 @@ public class Game {
 			return;
 		
 		int weapon_damage = weapon.get_damage();
+		weapon_damage += player.get_power_level();
+
 		int mob_power = curRoom.get_mob_obj().get_power();
 		String mob_name = curRoom.get_mob_obj().get_name();
 
@@ -145,6 +189,17 @@ public class Game {
 
 	public static void stash(String detail)
 	{
+		/*
+		* stash
+		* Stash the item specified in argument. Return invalid command
+		* if player not in stash room. 
+		*
+		* Arguments: String detail - item name.
+		*
+		* Return value - None. Prints to stdout an error or asks player
+		* to drop an item in the room.
+		*/
+
 		String stashRoom_name = stashRoom.get_name();
 		String curRoom_name = curRoom.get_name();
 
@@ -163,6 +218,16 @@ public class Game {
 
 	public static void drop(String detail)
 	{
+		/*
+		* drop
+		* Drop the item specified in argument in the cur room.
+		*
+		* Arguments: String detail - item name.
+		*
+		* Return value - None. Gets the item from player and adds
+		* to room.
+		*/
+
 		Item drop_item;
 		drop_item = player.drop(detail);
 
@@ -172,6 +237,17 @@ public class Game {
 
 	public static void pickup(String detail)
 	{
+		/*
+		* pickup
+		* Pickup an item from the current room so long as no
+		* mob exists and item found in room.
+		*
+		* Arguments: String detail - item name.
+		*
+		* Return value - None. Adds the item to player inventory
+		* or prints error to stdout.
+		*/
+
 		String [] cur_items = curRoom.get_items();
 		Item item_pickup;
 
@@ -199,12 +275,23 @@ public class Game {
 		// get item
 		item_pickup = curRoom.get_item(detail);
 
+		// remove item from room
 		if (player.pickup(item_pickup))
 			curRoom.remove(item_pickup);
 	}
 
 	public static void move(String detail)
 	{
+		/*
+		* move
+		* Move the player to room connection so long as connection
+		* exists and direction is valid.
+		*
+		* Arguments: String detail - direction.
+		*
+		* Return value - None. Adjusts curRoom if command valid.
+		*/
+
 		// invalid direction
 		if (!(detail.equals("NORTH") || detail.equals("SOUTH") || 
 			detail.equals("EAST") || detail.equals("WEST")))
@@ -213,6 +300,7 @@ public class Game {
 			return;
 		}
 
+		// reassign curRoom if connection exists
 		if (curRoom.valid_connect(detail))
 		{
 			curRoom = curRoom.get_connection(detail);
@@ -225,6 +313,16 @@ public class Game {
 
 	public static void examine(String detail)
 	{
+		/*
+		* examine
+		* Examine an item or mob in the current room. Print error
+		* if invalid command.
+		*
+		* Arguments: String detail - TYPE + NAME.
+		*
+		* Return value - None. Prints description or error to stdout.
+		*/
+
 		// no TYPE or NAME provided
 		if (detail.equals(""))
 		{
@@ -317,6 +415,16 @@ public class Game {
 
 	public static void read_file(String filename)
 	{
+		/*
+		* read_file
+		* Parse the game file and run different 'define' functions
+		* based on first word (cmd) of each line.
+		*
+		* Arguments: String filename - game file.
+		*
+		* Return value - None. Creates a dungeon based on game file.
+		*/
+
 		BufferedReader reader = null;
 		String line;
 		String[] words;
@@ -375,6 +483,15 @@ public class Game {
 
 	public static void defineConnection(String line)
 	{
+		/*
+		* defineConnections
+		* Define the room connections from the game file.
+		*
+		* Arguments: String line - line from game file.
+		*
+		* Return value - None. Creates a room connection based on game file.
+		*/
+
 		String[] dirs = {"NORTH", "SOUTH", "EAST", "WEST"};
 		String [] words = line.split(" ");
 		String direction = "";
@@ -414,6 +531,15 @@ public class Game {
 
 	public static void defineMob(BufferedReader reader)
 	{
+		/*
+		* defineMob
+		* Define the mob from the game file.
+		*
+		* Arguments: BufferedReader reader - reader position in game file.
+		*
+		* Return value - None. Creates a mob obj based on game file.
+		*/
+
 		String line;
 		String category;
 		String[] words;
@@ -468,12 +594,20 @@ public class Game {
 		{
 			System.err.println("Error when defining mob.");
 		}
-		
 
 	}
 
 	public static void defineTreasure(BufferedReader reader)
 	{
+		/*
+		* defineTreasure
+		* Define the treasure from the game file.
+		*
+		* Arguments: BufferedReader reader - reader position in game file.
+		*
+		* Return value - None. Creates a treasure obj based on game file.
+		*/
+
 		String line;
 		String category;
 		String[] words;
@@ -533,6 +667,15 @@ public class Game {
 
 	public static void defineWeapon(BufferedReader reader)
 	{
+		/*
+		* defineWeapon
+		* Define the weapon from the game file.
+		*
+		* Arguments: BufferedReader reader - reader position in game file.
+		*
+		* Return value - None. Creates a weapon obj based on game file.
+		*/
+
 		String line;
 		String category;
 		String[] words;
@@ -592,6 +735,15 @@ public class Game {
 
 	public static void defineRoom(BufferedReader reader)
 	{
+		/*
+		* defineRoom
+		* Define the room from the game file.
+		*
+		* Arguments: BufferedReader reader - reader position in game file.
+		*
+		* Return value - None. Creates a room obj based on game file.
+		*/
+
 		String line;
 		String category;
 		String[] words;
@@ -632,7 +784,8 @@ public class Game {
 				else if (category.equals("MOB:"))
 				{
 					mob = words[1];
-			
+					
+					// find mob obj from list
 					for (int i = 0; i < mobList.size(); i++)
 					{
 						if (mobList.get(i).get_name().equals(mob))

@@ -1,3 +1,12 @@
+/*
+* David Weinflash
+* Tim Root
+* Section 001B
+*
+* Assignment #12 - The Adventure, CSc 210, Fall 2017
+* This class acts as a base class for players.
+*/
+
 import java.util.*;
 
 public class Player {
@@ -11,6 +20,15 @@ public class Player {
 
 	Player()
 	{
+		/*
+		* Constructor
+		* Creates a Player object as base class.
+		*
+		* Arguments: None
+		*
+		* Return value - Player object with default attributes.
+		*/
+
 		carry_limit = 20;
 		power_level = 0;
 		moves = 0;
@@ -21,6 +39,16 @@ public class Player {
 
 	public boolean pickup(Item obj)
 	{
+		/*
+		* pickup
+		* Adds item to players inventory. Return true if successful,
+		* false if otherwise.
+		*
+		* Arguments: Item obj - Treasure, Weapon
+		*
+		* Return value - True if successful, false if otherwise.
+		*/
+
 		// return true if player can carry item,
 		// otherwise return false
 
@@ -41,6 +69,16 @@ public class Player {
 
 	public Item drop(String item_name)
 	{
+		/*
+		* drop
+		* Returns an item from player's inventory. Return item
+		* if successful, otherwise return null.
+		*
+		* Arguments: String item_name - Treasure, Weapon
+		*
+		* Return value - Item obj if successful, null if not.
+		*/
+
 		Item obj;
 
 		for (int i = 0; i < inventory.size(); i++)
@@ -61,6 +99,15 @@ public class Player {
 
 	public void get_inventory()
 	{
+		/*
+		* get_inventory
+		* Print inventory in alphabetical order.
+		*
+		* Arguments: None.
+		*
+		* Return value - None. Print to stdout.
+		*/
+		
 		String[] item_names = new String[inventory.size()];
 
 		// add names to item_names
@@ -89,6 +136,17 @@ public class Player {
 
 	public Weapon get_weapon(String item_name)
 	{
+		/*
+		* get_weapons
+		* Get the specified weapon from the player's inventory.
+		* Print error msg and return null if weapon not found.
+		*
+		* Arguments: String item_name - Weapon
+		*
+		* Return value - Weapon object. Null if weapon not
+		* in player's inventory.
+		*/
+
 		Item obj = null;
 
 		// find weapon in inventory
@@ -98,6 +156,7 @@ public class Player {
 				obj = inventory.get(i);
 		}
 		
+		// invalid weapon
 		if ((obj == null) || !(obj instanceof Weapon))
 		{
 			System.out.println("Invalid weapon.");
@@ -158,6 +217,16 @@ public class Player {
 
 	public int get_score(Room stashRoom)
 	{
+		/*
+		* get_score
+		* Get player's score based on moves and treasure
+		* in stash room.
+		*
+		* Arguments: Room stashRoom
+		*
+		* Return value - int representing total score.
+		*/
+
 		int total_moves = (int) Math.floor(moves / score_denom);
 		int total_values = 0;
 		String[] stash = stashRoom.get_items();
