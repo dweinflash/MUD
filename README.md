@@ -1,6 +1,6 @@
 # Text Based Dynamic Adventure Game
 
-An emulation of the classic Multi-User Dungeon game, played with only a single player.
+An single player version of the classic Multi-User Dungeon game.
 
 In game moves are created beforehand and passed in as a parameter.
 
